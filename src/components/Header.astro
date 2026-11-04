@@ -1,0 +1,21 @@
+---
+// Logo, ojo (cambia la paleta) y menú.
+const links = [
+  { href: '/#portfolio', texto: 'Portfolio' },
+  { href: '/#sobre-mi', texto: 'Sobre mí' },
+  { href: '/#contacto', texto: 'Contacto' },
+];
+---
+
+<header class="header">
+  <div class="container">
+    <a class="logo" href="/#top">Maru Garcia</a>
+    <button class="eye" id="eye" type="button" aria-label="Cambiar colores"><span class="pupil" id="pupil"></span></button>
+    <span class="click" id="click" aria-hidden="true">change!</span>
+    <nav aria-label="Principal">
+      <ul class="menu">
+        {links.map((link) => <li><a href={link.href}>{link.texto}</a></li>)}
+      </ul>
+    </nav>
+  </div>
+</header>

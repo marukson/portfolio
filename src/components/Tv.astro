@@ -1,0 +1,89 @@
+---
+/*
+ * "Sobre mí": la tele con tres canales.
+ * El contenido vive en este array; el HTML se arma recorriéndolo.
+ * Para sumar un canal, agregá un objeto (y los presets se generan solos).
+ */
+interface Canal {
+  nombre: string;
+  titulo: string;
+  textos: string[];
+  etiquetas?: { label: string; items: string[] };
+  cv?: string;
+}
+
+const canales: Canal[] = [
+  {
+    nombre: 'Web',
+    titulo: 'Desarrollo web',
+    textos: [
+      'Desarrollo sitios web a medida, principalmente sobre WordPress. Me especializo en frontend, temas personalizados, contenido autoadministrable e implementación de funcionalidades e interacciones.',
+    ],
+    etiquetas: {
+      label: 'Herramientas',
+      items: ['WordPress', 'WooCommerce', 'Gutenberg', 'PHP', 'ACF', 'Elementor', 'Divi', 'Astro', 'API REST', 'HTML', 'CSS', 'JavaScript', 'Tailwind', 'GSAP', 'ScrollTrigger', 'Bootstrap', 'Git', 'SEO técnico', 'Figma'],
+    },
+  },
+  {
+    nombre: 'Diseño / UX',
+    titulo: 'Diseño & UX',
+    textos: [
+      'Mi formación en diseño industrial y mi experiencia en diseño gráfico me permiten abordar el desarrollo web con una mirada que combina estética, funcionalidad y experiencia de usuario.',
+    ],
+    etiquetas: {
+      label: 'Herramientas y conocimientos',
+      items: ['Figma', 'Illustrator', 'Photoshop', 'Diseño de interfaces', 'Diseño responsive', 'Identidad visual'],
+    },
+  },
+  {
+    nombre: 'Sobre mí',
+    titulo: 'Hola, soy Maru.',
+    textos: [
+      'Soy diseñadora industrial de formación y desarrolladora web por elección. Empecé trabajando en diseño de productos, identidad visual y comunicación, hasta encontrar en el desarrollo frontend un lugar donde combinar mis intereses por el diseño y la tecnología.',
+      'Actualmente desarrollo sitios web a medida y sigo explorando nuevas herramientas y formas de crear experiencias digitales.',
+    ],
+    cv: '/cv-maru-garcia.pdf', // archivo en public/
+  },
+];
+
+const ch = (n: number) => `CH ${String(n + 1).padStart(2, '0')}`;
+---
+
+<section class="section" id="sobre-mi">
+  <div class="container">
+    <div class="tv" id="tv">
+      <div class="screen">
+        <ul class="jobs" id="jobs" aria-live="polite">
+          {canales.map((canal, i) => (
+            <li class="job" data-label={canal.nombre}>
+              <div class="when">{`${ch(i)} · ${canal.nombre}`}</div>
+              <div>
+                <h3>{canal.titulo}</h3>
+                {canal.textos.map((texto) => <p class="desc">{texto}</p>)}
+                {canal.etiquetas && (
+                  <ul class="tags" aria-label={canal.etiquetas.label}>
+                    {canal.etiquetas.items.map((item) => <li>{item}</li>)}
+                  </ul>
+                )}
+                {canal.cv && <a class="cv" href={canal.cv} target="_blank" rel="noopener">Ver mi CV ↗</a>}
+              </div>
+            </li>
+          ))}
+        </ul>
+        <div class="static" aria-hidden="true"></div>
+      </div>
+      <div class="panel">
+        <div class="presets">
+          <span class="led" aria-hidden="true"></span>
+          {canales.map((canal, i) => (
+            <button class="ch" type="button" aria-pressed={i === 0 ? 'true' : 'false'} aria-label={`Canal ${i + 1}: ${canal.titulo}`}>{i + 1}</button>
+          ))}
+        </div>
+        <div class="arrows">
+          <button class="chstep" type="button" id="chprev" aria-label="Canal anterior">Ch −</button>
+          <button class="chstep" type="button" id="chnext" aria-label="Canal siguiente">Ch +</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

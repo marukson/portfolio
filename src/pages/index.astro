@@ -1,16 +1,38 @@
 ---
+/*
+ * Home. Cada archivo en src/pages es una página: este es "/".
+ * Lo de arriba (entre ---) corre en el servidor al construir; lo de abajo es el HTML.
+ */
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import ProjectRow from '../components/ProjectRow.astro';
+import Tv from '../components/Tv.astro';
+import Contact from '../components/Contact.astro';
+import { getProyectos } from '../lib/wordpress';
+
+const proyectos = await getProyectos();
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Base boot>
+  <!-- La señal: líneas de color → barras de prueba (la dibuja portfolio.js) -->
+  <canvas slot="fuera" id="signal" aria-hidden="true"></canvas>
+
+  <Hero />
+
+  <div class="signal-space" aria-hidden="true"></div>
+
+  <section class="section" id="portfolio">
+    <div class="container">
+      <div class="title">
+        <h4 class="subtitle">Últimos proyectos</h4>
+        <span class="count">{proyectos.length} sitios</span>
+      </div>
+      <ul class="feed">
+        {proyectos.map((p) => <ProjectRow titulo={p.titulo} url={p.url} />)}
+      </ul>
+    </div>
+  </section>
+
+  <Tv />
+  <Contact />
+</Base>

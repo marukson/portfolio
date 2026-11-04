@@ -1,0 +1,16 @@
+---
+// Una fila de la lista de proyectos. Equivale a loop-portfolio.php.
+interface Props {
+  titulo: string;
+  url: string;
+}
+
+const { titulo, url } = Astro.props;
+---
+
+<li>
+  <a href={url} target="_blank" rel="noopener">
+    <h2 set:html={titulo} />
+    <span class="seemore">Visitar sitio ↗</span>
+  </a>
+</li>
