@@ -3,7 +3,11 @@
  * "Sobre mí": la tele con tres canales.
  * El contenido vive en este array; el HTML se arma recorriéndolo.
  * Para sumar un canal, agregá un objeto (y los presets se generan solos).
+ * El link del CV viene de WordPress (campo ACF "cv" de la página de inicio).
  */
+import { getCV } from '../lib/wordpress';
+
+const cvUrl = await getCV();
 interface Canal {
   nombre: string;
   titulo: string;
@@ -42,7 +46,7 @@ const canales: Canal[] = [
       'Soy diseñadora industrial de formación y desarrolladora web por elección. Empecé trabajando en diseño de productos, identidad visual y comunicación, hasta encontrar en el desarrollo frontend un lugar donde combinar mis intereses por el diseño y la tecnología.',
       'Actualmente desarrollo sitios web a medida y sigo explorando nuevas herramientas y formas de crear experiencias digitales.',
     ],
-    cv: '/cv-maru-garcia.pdf', // archivo en public/
+    cv: cvUrl, // si está vacío, no se muestra el link
   },
 ];
 

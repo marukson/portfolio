@@ -50,3 +50,34 @@ export async function getProyectos(): Promise<Proyecto[]> {
     }))
     .filter((p) => p.url); // sin link no hay nada que mostrar
 }
+
+/*
+ * CV: campo ACF "cv" (tipo Archivo, devuelve array) de la página de inicio.
+ * Devuelve la URL del PDF, o '' si todavía no se subió ninguno.
+ */
+const INICIO_ID = 2; // ID de la página "Inicio" en WordPress (el grupo de ACF "Inicio" está asignado a esta página)
+
+interface WPInicio {
+  acf: { cv?: { url?: string } | false | '' } | [];
+}
+
+export async function getCV(): Promise<string> {
+  const endpoint = new URL(`/wp-json/wp/v2/pages/${INICIO_ID}`, WP_URL);
+  endpoint.searchParams.set('acf_format', 'standard');
+  endpoint.searchParams.set('_fields', 'acf');
+
+  let res: Response;
+  try {
+    res = await fetch(endpoint);
+  } catch (error) {
+    throw new Error(`No pude conectar con WordPress en ${WP_URL}. ¿Está iniciado el sitio en LocalWP?`, { cause: error });
+  }
+  if (!res.ok) {
+    throw new Error(`WordPress respondió ${res.status} al pedir ${endpoint}`);
+  }
+
+  const data: WPInicio = await res.json();
+  if (Array.isArray(data.acf)) return '';
+  const cv = data.acf.cv;
+  return cv && typeof cv === 'object' ? (cv.url ?? '') : '';
+}
