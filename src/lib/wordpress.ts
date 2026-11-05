@@ -27,6 +27,8 @@ export async function getProyectos(): Promise<Proyecto[]> {
   endpoint.searchParams.set('per_page', '100'); // por defecto son 10
   endpoint.searchParams.set('acf_format', 'standard');
   endpoint.searchParams.set('_fields', 'id,title,acf'); // solo lo que usamos: respuesta más liviana
+  endpoint.searchParams.set('orderby', 'menu_order'); // el orden de Simple Custom Post Order
+  endpoint.searchParams.set('order', 'asc');
 
   let res: Response;
   try {
